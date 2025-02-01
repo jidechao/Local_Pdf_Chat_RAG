@@ -72,6 +72,7 @@ ollama serve &
 
 1. 启动服务：
 ```bash
+.\rag_env\Scripts\activate
 python rag_demo.py
 ```
 2. 访问浏览器打开的本地地址（通常是`http://localhost:17995`）
