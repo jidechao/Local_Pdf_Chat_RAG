@@ -26,7 +26,7 @@ import os
 os.environ['NO_PROXY'] = 'localhost,127.0.0.1'  # 新增代理绕过设置
 
 # 初始化组件
-EMBED_MODEL = SentenceTransformer('BAAI/BGE-M3')
+EMBED_MODEL = SentenceTransformer('BAAI/BGE-M3') #嵌入模型采用bge-m3
 CHROMA_CLIENT = chromadb.PersistentClient(
     path="./chroma_db",
     settings=chromadb.Settings(anonymized_telemetry=False)
