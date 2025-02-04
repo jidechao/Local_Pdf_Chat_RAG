@@ -26,7 +26,7 @@ import os
 os.environ['NO_PROXY'] = 'localhost,127.0.0.1'  # 新增代理绕过设置
 
 # 初始化组件
-EMBED_MODEL = SentenceTransformer('all-MiniLM-L6-v2')
+EMBED_MODEL = SentenceTransformer('BAAI/BGE-M3')
 CHROMA_CLIENT = chromadb.PersistentClient(
     path="./chroma_db",
     settings=chromadb.Settings(anonymized_telemetry=False)
@@ -61,7 +61,7 @@ def process_pdf(file, progress=gr.Progress()):
         
         progress(0.4, desc="分割文本...")
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=800,
+            chunk_size=500,
             chunk_overlap=50
         )
         chunks = text_splitter.split_text(text)
@@ -113,7 +113,7 @@ def stream_answer(question, progress=gr.Progress()):
         response = session.post(
             "http://localhost:11434/api/generate",
             json={
-                "model": "deepseek-r1:1.5b",
+                "model": "deepseek-r1:latest",
                 "prompt": prompt,
                 "stream": True  # 启用流式
             },
@@ -160,7 +160,7 @@ def query_answer(question, progress=gr.Progress()):
         response = session.post(
             "http://localhost:11434/api/generate",
             json={
-                "model": "deepseek-r1:1.5b",
+                "model": "deepseek-r1:latest",
                 "prompt": prompt,
                 "stream": False
             },
@@ -291,12 +291,12 @@ def check_environment():
         # 添加模型存在性检查
         model_check = session.post(
             "http://localhost:11434/api/show",
-            json={"name": "deepseek-r1:7b"},
+            json={"name": "deepseek-r1:latest"},
             timeout=10
         )
         if model_check.status_code != 200:
             print("模型未加载！请先执行：")
-            print("ollama pull deepseek-r1:7b")
+            print("ollama pull deepseek-r1:latest")
             return False
             
         # 原有检查保持不变...
